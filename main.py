@@ -14,6 +14,7 @@ SPACECRAFT_WIDTH, SPACECRAFT_HEIGHT = 60, 55
 
 FPS = 60
 VEL = 5
+BULLET_VEL = 7
 
 VIOLET_SPACECRAFT_IMG = pygame.image.load("./Assets/spaceship_violet.png")
 RED_SPACECRAFT_IMG = pygame.image.load("./Assets/spaceship_red.png")
@@ -54,13 +55,13 @@ def keyBehaviour(keys, VIOLET_SPACECRAFT, RED_SPACECRAFT):
     if keys[pygame.K_s] and RED_SPACECRAFT.y + VEL + RED_SPACECRAFT.height < HEIGHT:
         RED_SPACECRAFT.y += VEL
 
-    if keys[pygame.K_LEFT] and RED_SPACECRAFT.x - VEL > 0:
+    if keys[pygame.K_LEFT] and VIOLET_SPACECRAFT.x - VEL > BORDER.x + BORDER.width:
         VIOLET_SPACECRAFT.x -= VEL
-    if keys[pygame.K_RIGHT] and RED_SPACECRAFT.x + VEL + RED_SPACECRAFT.width < BORDER.x :
+    if keys[pygame.K_RIGHT] and VIOLET_SPACECRAFT.x + VEL + VIOLET_SPACECRAFT.width < WIDTH :
         VIOLET_SPACECRAFT.x += VEL
-    if keys[pygame.K_UP] and RED_SPACECRAFT.y - VEL > BORDER.x + BORDER.width:
+    if keys[pygame.K_UP] and VIOLET_SPACECRAFT.y - VEL > 0:
         VIOLET_SPACECRAFT.y -= VEL
-    if keys[pygame.K_DOWN] and RED_SPACECRAFT.y + VEL + RED_SPACECRAFT.height < HEIGHT:
+    if keys[pygame.K_DOWN] and VIOLET_SPACECRAFT.y + VEL + VIOLET_SPACECRAFT.height < HEIGHT:
         VIOLET_SPACECRAFT.y += VEL
 
 
@@ -71,13 +72,34 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
-    score = 0
+    score = 0   
+    
+    violet_bullets = []
+    red_bullets = []
 
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LCTRL:
+                    violet_bullets.append(
+                        pygame.Rect(
+                            VIOLET_SPACECRAFT.x, VIOLET_SPACECRAFT.y + VIOLET_SPACECRAFT.height / 2, 10, 5
+                        )
+                    )
+                
+                
+                if event.key == pygame.K_RCTRL:
+                    red_bullets.append(
+                        pygame.Rect(
+                            RED_SPACECRAFT.x + + RED_SPACECRAFT.width, RED_SPACECRAFT.y + RED_SPACECRAFT.height / 2, 10, 5
+                        )
+                    )
+                    
+                    
         pygame.display.update()
 
         keys = pygame.key.get_pressed()
@@ -90,10 +112,10 @@ def main():
 
         keyBehaviour(keys, VIOLET_SPACECRAFT, RED_SPACECRAFT)
 
-        if BORDER.collidepoint(
-            VIOLET_SPACECRAFT.x, VIOLET_SPACECRAFT.y
-        ) or BORDER.collidepoint(RED_SPACECRAFT.x + 50, RED_SPACECRAFT.y):
-            run = False
+        # if BORDER.collidepoint(
+        #     VIOLET_SPACECRAFT.x, VIOLET_SPACECRAFT.y
+        # ) or BORDER.collidepoint(RED_SPACECRAFT.x + 50, RED_SPACECRAFT.y):
+        #     run = False
 
         # -------------------------------- drawWindows ------------------------------- #
 
