@@ -10,7 +10,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 BORDER = pygame.Rect(WIDTH // 2 - 5, 0, 8, HEIGHT)
 
-FONT = pygame.font.SysFont("comicsans", 80)
+FONT = pygame.font.SysFont("comicsans", 80, True, True)
 FONT1 = pygame.font.SysFont("comicsans", 30)
 SPACECRAFT_WIDTH, SPACECRAFT_HEIGHT = 60, 55
 
@@ -69,14 +69,14 @@ def drawWindows(
 
     red_health_text = FONT1.render("Health: " + str(red_health), 1, "White")
     violet_health_text = FONT1.render("Health: " + str(violet_health), 1, "White")
-    WIN.blit(red_health_text, (
+    WIN.blit(
+        red_health_text,
+        (
             WIDTH - red_health_text.get_width() - 20,
             HEIGHT - violet_health_text.get_height() - 10,
-        ),)
-    WIN.blit(
-        violet_health_text,
-        (5, HEIGHT - red_health_text.get_height() - 10)
+        ),
     )
+    WIN.blit(violet_health_text, (5, HEIGHT - red_health_text.get_height() - 10))
 
     pygame.display.update()
 
@@ -167,7 +167,7 @@ def main():
                     )
                     red_bullets.append(bullet)
                     BULLET_FIRE_SOUND.play()
-                    
+
             if red_health <= 0 and violet_health <= 0:
                 lost = FONT.render("Draw!", 1, "white")
                 WIN.blit(
@@ -200,7 +200,7 @@ def main():
             if event.type == RED_HIT:
                 violet_health -= 25
                 BULLET_HIT_SOUND.play()
-                if violet_health <= 0: 
+                if violet_health <= 0:
                     lost = FONT.render("Blue Wins!", 1, "Blue")
                     WIN.blit(
                         lost,
